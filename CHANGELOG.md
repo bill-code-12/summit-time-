@@ -8,6 +8,8 @@ and this project adheres to
 
 ## Unreleased
 
+## 0.1.14 - 2026-08-03
+
 ### Added
 
  - Added Verification Tag validation on incoming packets as per RFC 9260 Section 8.5.
