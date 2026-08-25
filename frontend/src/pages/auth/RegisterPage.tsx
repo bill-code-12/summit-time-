@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../../store';
-import { authAPI } from '../../services/api';
+import { authService } from '../../lib/authService';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const setUser = useAuthStore((state) => state.setUser);
-  const setToken = useAuthStore((state) => state.setToken);
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,18 +38,10 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await authAPI.register(
-        formData.email,
-        formData.name,
-        formData.password
-      );
-      const { token, user } = response.data.data;
-
-      setToken(token);
-      setUser(user);
+      await authService.register(formData.email, formData.name, formData.password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to register. Please try again.');
+      setError(err.message || 'Failed to register. Please try again.');
     } finally {
       setIsLoading(false);
     }

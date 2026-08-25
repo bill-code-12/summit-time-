@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../../store';
-import { authAPI } from '../../services/api';
+import { authService } from '../../lib/authService';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const setUser = useAuthStore((state) => state.setUser);
-  const setToken = useAuthStore((state) => state.setToken);
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,14 +24,10 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await authAPI.login(formData.email, formData.password);
-      const { token, user } = response.data.data;
-
-      setToken(token);
-      setUser(user);
+      await authService.login(formData.email, formData.password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to login. Please try again.');
+      setError(err.message || 'Failed to login. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -105,13 +97,6 @@ const LoginPage: React.FC = () => {
             </Link>
           </div>
         </form>
-
-        {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-neutral-100 rounded-lg text-sm text-neutral-600">
-          <p className="font-semibold mb-2">Demo Credentials:</p>
-          <p>Email: demo@example.com</p>
-          <p>Password: demo1234</p>
-        </div>
       </div>
     </div>
   );
