@@ -1,11 +1,12 @@
+use firestore_auth::verify_firebase_token;
 use actix_web::{HttpRequest, HttpResponse, body::BoxBody};
-use log::warn;
 use std::future::{ready, Ready};
 use actix_web::{
     dev::{forward_ready, Service, ServiceRequest, ServiceResponse, Transform},
     Error, HttpMessage,
 };
 use futures::future::LocalBoxFuture;
+use log::{warn, info};
 
 pub struct FirebaseAuthMiddleware;
 
@@ -62,9 +63,13 @@ where
 
         match token {
             Some(token) => {
-                // TODO: Verify Firebase token
-                // For now, we'll accept any token
-                req.extensions_mut().insert(token);
+                // TODO: Verify Firebase token here
+                // For now, extract user_id from token (will be implemented)
+                let user_id = "firebase_user_id".to_string();
+                
+                let mut req = req;
+                req.extensions_mut().insert(user_id);
+                
                 let fut = self.service.call(req);
                 Box::pin(async move {
                     let res = fut.await?;

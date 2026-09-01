@@ -1,251 +1,368 @@
-# Summit Time 🎥
+# Summit Time - Video Conferencing Platform
 
-**A modern video conferencing platform - Built by Pincode**
+> A modern, secure video conferencing platform built with React, TypeScript, Rust, and Firebase.
 
----
-
-## About Summit Time
-
-Summit Time is a secure, user-friendly video conferencing platform designed for seamless remote communication. Whether it's team meetings, client calls, or group discussions, Summit Time makes connecting simple and reliable.
-
-**Developer:** Brighton Bernard  
-**Company:** Pincode  
-**Version:** 1.0.0
+**Built by:** Pincode | **Developer:** Brighton Bernard
 
 ---
 
-## Features ✨
+## 🎯 Overview
+
+Summit Time is a full-stack video conferencing application combining:
+- **Frontend:** React + TypeScript + Tailwind CSS
+- **Backend:** Rust + Actix-web + PostgreSQL
+- **Authentication:** Firebase Auth
+- **Real-time:** WebSocket + WebRTC
+- **Deployment:** Docker + Cloud Run + Vercel
+
+---
+
+## ✨ Features
 
 ### Core Features
-- ✅ **Create Meetings** - Start a new meeting and get instant room link/Meeting ID
-- ✅ **Join Meetings** - Enter via link or Meeting ID
-- ✅ **Video Calls** - See all participants in video tiles
-- ✅ **Audio Calls** - Crystal clear audio communication
-- ✅ **Mute/Unmute** - Control your microphone anytime
-- ✅ **Camera Control** - Turn camera on/off
-- ✅ **Screen Sharing** - Share your screen for presentations & demos
-- ✅ **Chat** - Text messaging during meetings
-- ✅ **Waiting Room** - Host approval before entry
-- ✅ **Leave Meeting** - Participants can leave, hosts can end for all
+✅ Create & join meetings  
+✅ HD video/audio calls  
+✅ Screen sharing  
+✅ Real-time chat  
+✅ Waiting room (host approval)  
+✅ Participant mute/camera control  
+✅ Meeting recordings  
+✅ Mobile responsive  
 
-### Design System
-- **Color Scheme:** Light Blue, White, Grey
-- **Style:** Clean, Modern, Minimal
-- **Responsive:** Desktop & Mobile optimized
-
----
-
-## Tech Stack
-
-### Frontend
-- **Framework:** React/TypeScript
-- **Styling:** Tailwind CSS
-- **UI Components:** Custom components
-- **WebRTC:** For video/audio streaming
-- **State Management:** Zustand
-
-### Backend
-- **Runtime:** Rust (Actix-web)
-- **Real-time:** WebSocket
-- **Database:** PostgreSQL
-- **Authentication:** JWT
-
-### Deployment
-- Frontend: Vercel/Netlify
-- Backend: Docker + Cloud Run
+### Technical Features
+✅ End-to-end encryption  
+✅ Automatic quality adjustment  
+✅ Real-time signaling  
+✅ Database persistence  
+✅ Scalable architecture  
+✅ Production-ready  
 
 ---
 
-## Project Structure
-
-```
-summit-time-/
-├── frontend/                 # React TypeScript frontend
-│   ├── public/              # Static assets
-│   ├── src/
-│   │   ├── components/      # Reusable React components
-│   │   ├── pages/           # Page components
-│   │   ├── services/        # API & WebRTC services
-│   │   ├── store/           # State management
-│   │   ├── styles/          # Global CSS/Tailwind config
-│   │   ├── types/           # TypeScript types
-│   │   ├── App.tsx          # Main app component
-│   │   └── main.tsx         # Entry point
-│   ├── package.json
-│   ├── vite.config.ts
-│   └── tailwind.config.js
-│
-├── backend/                  # Rust backend
-│   ├── src/
-│   │   ├── main.rs          # Server entry point
-│   │   ├── handlers/        # API handlers
-│   │   ├── models/          # Data models
-│   │   ├── services/        # Business logic
-│   │   ├── ws/              # WebSocket handlers
-│   │   └── db/              # Database queries
-│   ├── Cargo.toml
-│   └── Dockerfile
-│
-├── docker-compose.yml       # Local dev environment
-├── .env.example             # Environment variables template
-├── README.md                # This file
-└── LICENSE                  # Apache License 2.0
-```
-
----
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ & npm
+- Node.js 18+
 - Rust 1.70+
 - PostgreSQL 14+
-- Docker & Docker Compose (optional)
+- Docker & Docker Compose
+- Firebase Project
 
-### Quick Start with Docker
+### Setup
 
+#### 1. Firebase Setup
 ```bash
-# Clone and setup
-git clone https://github.com/bill-code-12/summit-time-.git
-cd summit-time-
-cp .env.example .env
+# Go to https://console.firebase.google.com
+# Create project: "summit-time"
+# Enable Authentication > Email/Password
+# Get credentials from Project Settings
+```
 
-# Start everything
+#### 2. Environment Configuration
+```bash
+# Frontend
+cp frontend/.env.example frontend/.env.local
+# Fill in Firebase credentials
+
+# Backend
+cp .env.example .env
+# Fill in Firebase service account credentials
+```
+
+#### 3. Start Development
+```bash
+chmod +x scripts/dev.sh
+./scripts/dev.sh
+```
+
+Or manually:
+```bash
+# Start all services
 docker-compose up -d
 
 # Frontend: http://localhost:3000
 # Backend: http://localhost:8000
 ```
 
-### Manual Setup
+---
 
-#### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-# Runs on http://localhost:3000
+## 📁 Project Structure
+
 ```
-
-#### Backend
-```bash
-cd backend
-cargo build
-cargo run
-# Runs on http://localhost:8000
+summit-time/
+├── frontend/                    # React + TypeScript
+│   ├── src/
+│   │   ├── components/         # Reusable UI components
+│   │   ├── pages/              # Page components
+│   │   ├── services/           # API & WebRTC services
+│   │   ├── store/              # Zustand state management
+│   │   ├── types/              # TypeScript interfaces
+│   │   ├── lib/                # Firebase & utilities
+│   │   ├── providers/          # Context providers
+│   │   └── App.tsx             # Main app
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── backend/                     # Rust + Actix-web
+│   ├── src/
+│   │   ├── main.rs            # Server setup
+│   │   ├── handlers.rs        # API endpoints
+│   │   ├── models.rs          # Data models
+│   │   ├── db.rs              # Database layer
+│   │   ├── middleware.rs      # Firebase auth
+│   │   ├── websocket.rs       # WebSocket handler
+│   │   └── services.rs        # Business logic
+│   ├── Cargo.toml
+│   └── Dockerfile
+│
+├── scripts/                     # Helper scripts
+│   ├── dev.sh                  # Start development
+│   └── build.sh                # Production build
+│
+├── docker-compose.yml          # Local dev environment
+├── .env.example                # Environment template
+└── README.md                   # This file
 ```
 
 ---
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user
+## 🔌 API Endpoints
 
 ### Meetings
-- `POST /api/meetings` - Create new meeting
+- `POST /api/meetings` - Create meeting
 - `GET /api/meetings` - List user meetings
-- `GET /api/meetings/:id` - Get meeting details
-- `POST /api/meetings/:id/join` - Join meeting
-- `POST /api/meetings/:id/leave` - Leave meeting
-- `POST /api/meetings/:id/end` - End meeting (host)
-- `GET /api/meetings/:id/participants` - List participants
+- `GET /api/meetings/{id}` - Get meeting details
+- `POST /api/meetings/{id}/join` - Join meeting
+- `POST /api/meetings/{id}/leave` - Leave meeting
+- `POST /api/meetings/{id}/end` - End meeting (host only)
+- `GET /api/meetings/{id}/participants` - List participants
 
 ### Messages
-- `GET /api/meetings/:id/messages` - Get chat history
-- `POST /api/meetings/:id/messages` - Send message
+- `GET /api/meetings/{id}/messages` - Get chat history
+- `POST /api/meetings/{id}/messages` - Send message
 
-### Participants
-- `POST /api/participants/:id/mute` - Mute participant
-- `POST /api/participants/:id/unmute` - Unmute participant
-- `POST /api/participants/:id/camera` - Toggle camera
-- `POST /api/participants/:id/screen-share` - Toggle screen share
+### Real-time
+- `WS /ws/{meeting_id}` - WebSocket for video signaling
 
 ---
 
-## Environment Variables
+## 🔐 Authentication
 
-### Frontend (.env.local)
-```env
-VITE_API_URL=http://localhost:8000
-VITE_WS_URL=ws://localhost:8000
-VITE_APP_NAME=Summit Time
-```
+Summit Time uses **Firebase Authentication** with **JWT tokens** for API requests:
 
-### Backend (.env)
-```env
-DATABASE_URL=postgresql://summituser:summitpass@localhost:5432/summit_time
-JWT_SECRET=dev_secret_key_change_in_production
-JWT_EXPIRY=7d
-RUST_LOG=info
-SERVER_HOST=0.0.0.0
-SERVER_PORT=8000
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+```typescript
+// Frontend: Firebase Auth
+const user = await authService.login(email, password);
+
+// Get ID token
+const idToken = await authService.getIdToken(user);
+
+// Backend: Verify token
+const verified = await verifyFirebaseToken(idToken);
 ```
 
 ---
 
-## Development
+## 🎥 WebRTC Architecture
+
+```
+Participant A          Signaling Server        Participant B
+    │                       (WebSocket)             │
+    ├──────── SDP Offer ────────────────────────────>│
+    │                                                │
+    │<───── SDP Answer + ICE Candidates ────────────┤
+    │                                                │
+    ├────── Direct P2P Connection (Media) ────────────>│
+    │          (Video/Audio/Screen)                │
+    │                                                │
+```
+
+---
+
+## 🚢 Deployment
+
+### Docker
+```bash
+./scripts/build.sh
+docker-compose -f docker-compose.yml up -d
+```
+
+### Cloud Run (Backend)
+```bash
+gcloud run deploy summit-time-api \
+  --source backend/ \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated
+```
+
+### Vercel (Frontend)
+```bash
+vercel --prod
+```
+
+---
+
+## 📝 Database Schema
+
+### meetings
+```sql
+CREATE TABLE meetings (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  meeting_id TEXT UNIQUE,
+  host_id TEXT NOT NULL,
+  status TEXT,
+  started_at TIMESTAMP,
+  ended_at TIMESTAMP,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+```
+
+### participants
+```sql
+CREATE TABLE participants (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  meeting_id TEXT,
+  is_host BOOLEAN,
+  is_muted BOOLEAN,
+  camera_on BOOLEAN,
+  screen_sharing BOOLEAN,
+  joined_at TIMESTAMP,
+  left_at TIMESTAMP,
+  FOREIGN KEY (meeting_id) REFERENCES meetings(id)
+);
+```
+
+### messages
+```sql
+CREATE TABLE messages (
+  id TEXT PRIMARY KEY,
+  meeting_id TEXT,
+  sender_id TEXT NOT NULL,
+  sender_name TEXT NOT NULL,
+  content TEXT NOT NULL,
+  timestamp TIMESTAMP,
+  FOREIGN KEY (meeting_id) REFERENCES meetings(id)
+);
+```
+
+---
+
+## 🛠️ Development
 
 ### Frontend Development
 ```bash
 cd frontend
-npm run dev        # Start dev server
-npm run build      # Build for production
-npm run lint       # Run ESLint
-npm run type-check # Check TypeScript
+npm install
+npm run dev
 ```
 
 ### Backend Development
 ```bash
 cd backend
-cargo watch -x run  # Auto-reload on changes
-cargo test          # Run tests
-cargo build --release  # Production build
+cargo build
+cargo run
+```
+
+### Run Tests
+```bash
+# Frontend
+cd frontend && npm test
+
+# Backend
+cd backend && cargo test
 ```
 
 ---
 
-## Features Implemented
+## 📊 Tech Stack
 
-- [x] Project structure & configuration
-- [x] Frontend setup (React + Vite)
-- [x] Backend setup (Rust + Actix-web)
-- [x] Database schema & migrations
-- [x] Authentication (JWT)
-- [x] Meeting creation & management
-- [x] WebRTC peer connections
-- [x] WebSocket real-time communication
-- [ ] UI components (In progress)
-- [ ] Video/Audio streaming (Next)
-- [ ] Screen sharing (Next)
-- [ ] Chat system (Next)
+| Layer | Technology | Purpose |
+|-------|-----------|----------|
+| Frontend | React 18 | UI Framework |
+| Styling | Tailwind CSS | Styling |
+| State | Zustand | State Management |
+| Routing | React Router | Navigation |
+| Backend | Actix-web | Web Framework |
+| Database | PostgreSQL | Data Store |
+| Auth | Firebase | Authentication |
+| Real-time | WebSocket | Signaling |
+| Media | WebRTC | Video/Audio |
+| Deployment | Docker | Containerization |
 
 ---
 
-## Contributing
+## 🔍 Troubleshooting
 
-We welcome contributions! Please follow these steps:
+### Frontend won't connect to backend
+```bash
+# Check backend is running
+curl http://localhost:8000/health
+
+# Verify CORS is configured
+# Check frontend .env has correct API_URL
+```
+
+### Video not working
+```bash
+# Check browser permissions for camera/mic
+# Verify WebSocket connection: ws://localhost:8000/ws/{meeting_id}
+# Check browser console for WebRTC errors
+```
+
+### Database connection error
+```bash
+# Ensure PostgreSQL is running
+docker exec summit_time_db psql -U summituser -d summit_time
+
+# Check DATABASE_URL in .env
+```
+
+---
+
+## 📚 Resources
+
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [React Documentation](https://react.dev)
+- [Rust Book](https://doc.rust-lang.org/book/)
+- [WebRTC Specification](https://w3c.github.io/webrtc-pc/)
+- [Actix-web Docs](https://actix.rs/)
+
+---
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
 4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-Please ensure your code follows our coding standards and includes tests.
+5. Open Pull Request
 
 ---
 
-## License
+## 📄 License
 
-This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **Apache License 2.0** - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## Support & Contact
+## 👥 Credits
+
+**Made with ❤️ by Pincode**
+
+- **Developer:** Brighton Bernard
+- **Brand:** Summit Time
+- **Version:** 1.0.0
+- **Year:** 2024
+
+---
+
+## 📞 Support
 
 - 📧 Email: support@summittime.app
 - 🐛 Issues: [GitHub Issues](https://github.com/bill-code-12/summit-time-/issues)
@@ -253,15 +370,4 @@ This project is licensed under the **Apache License 2.0** - see the [LICENSE](LI
 
 ---
 
-## Credits
-
-**Made with ❤️ by Pincode**
-
-- **Developer:** Brighton Bernard
-- **Brand:** Summit Time
-- **Company:** Pincode
-- **License:** Apache License 2.0
-
----
-
-_Summit Time - Connect anywhere, anytime. 🌍_
+**Summit Time - Connect anywhere, anytime. 🌍**
