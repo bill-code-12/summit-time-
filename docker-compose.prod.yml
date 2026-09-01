@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: summit_time_db_prod
+    environment:
+      POSTGRES_USER: ${DB_USER:-summituser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-summitpass}
+      POSTGRES_DB: ${DB_NAME:-summit_time}
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-summituser}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - summit_time_network_prod
+    restart: always
+
+  # Rust Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: summit_time_api_prod
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-summituser}:${DB_PASSWORD:-summitpass}@postgres:5432/${DB_NAME:-summit_time}
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID}
+      FIREBASE_PRIVATE_KEY: ${FIREBASE_PRIVATE_KEY}
+      FIREBASE_CLIENT_EMAIL: ${FIREBASE_CLIENT_EMAIL}
+      RUST_LOG: info
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - summit_time_network_prod
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: summit_time_web_prod
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
+      VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:8000}
+    depends_on:
+      - backend
+    networks:
+      - summit_time_network_prod
+    restart: always
+
+volumes:
+  postgres_data_prod:
+    driver: local
+
+networks:
+  summit_time_network_prod:
+    driver: bridge
